@@ -2,7 +2,7 @@
 A Murder Drones fangame, written in C++ using SFML
 
 # Dependencies
-FeedTheBeast relies on [Simple and Fast Multimedia Library](https://www.sfml-dev.org/). Install it, either through your distro's package manager, or by building it from source, before attempting to build FeedTheBeast. Make sure you're installing version 3.0.0 or later, because older versions do not work (some distro package managers have not yet updated to include the latest version, in which case you'll have to build yourself).
+FeedTheBeast relies on [Simple and Fast Multimedia Library](https://www.sfml-dev.org/). Install it, either through your distro's package manager, or by building it from source, before attempting to build FeedTheBeast. Make sure you're installing version 3.0.0 or later, because older versions do not work (some distro package managers have not yet updated to include the latest version, in which case you'll have to build the library yourself).
 
 # Compilation/Installation guide
 This project uses `meson`, a build tool that automatically handles compilation and linking. 
