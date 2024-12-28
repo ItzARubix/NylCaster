@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 
+
 int main() {
 
 	// Initialize player position and angle
@@ -61,6 +62,22 @@ int main() {
 			
 		}
 
+		// Here, we'll place the logic to allow our sample quad to be rendered
+		// Step 1: Determine the displacement vectors between the player and the left/right edges of the quad.
+		sf::Vector2 displacementLeft = quadLeft-playerPos;
+		sf::Vector2 displacementRight = quadRight-playerPos;
+		// Step 2: Save the apparent height of each edge of the quad based on the displacement.
+		float apparentHeightLeft = 100/displacementLeft.length();
+		float apparentHeightRight = 100/displacementRight.length();
+		// Step 3: Determine the angles between the playerVision and each displacement.
+		sf::Angle quadLeftAngle = playerVision.angleTo(displacementLeft);
+		sf::Angle quadRightAngle = playerVision.angleTo(displacementRight);
+		// (DEBUG): Print the quadLeftAngle and quadRightAngle
+		std::cout << "LAngle: " << quadLeftAngle.asDegrees() << "\n";
+		std::cout << "RAngle: " << quadRightAngle.asDegrees() << "\n";
+		// Step 4: Convert the view angle to a place on screen
+
+		// The last step in the loop is to actually draw everything to the screen. 
 		// Each frame, assuming the window wasn't closed, run these lines: 
 		window.clear(); // 1. Clear the framebuffer
 
