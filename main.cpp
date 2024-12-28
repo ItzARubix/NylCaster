@@ -5,9 +5,12 @@
 int main() {
 
 	// Initialize player position and angle
-	double playerX = 50;
-	double playerY = 50;
+	sf::Vector2 playerPos(50.0f, 50.0f);
 	sf::Angle camAngle = sf::degrees(0); // Measured from typical x-axis, and clockwise (rather than typical CCW)
+
+	// Create a temporary quad. In particular, these are just two points, a left and right
+	sf::Vector2 quadLeft(100.0f, 40.0f);
+	sf::Vector2 quadRight(100.0f, 60.0f);
 
 	// Create the clock (this will be used for calculating deltaTime, which is the time between frames)
 	sf::Clock clock;
@@ -23,9 +26,6 @@ int main() {
 	};
 	// Create the window
 	sf::RenderWindow window(sf::VideoMode({640, 360}), "FeedTheBeast");
-	sf::CircleShape shape(180.f); // This (temporary) line creates a variable called shape which is a circle of radius 180
-	shape.setFillColor(sf::Color::Green); // This (temporary) line fills the circle green
-	shape.setPosition({140, 0}); // This (temporary) line positions the circle such that it's in the middle of the screen
 
 	while (window.isOpen()) { // Run as long as the window is open
 		while (const std::optional event = window.pollEvent()) { // Check all of the window's events...
@@ -52,11 +52,11 @@ int main() {
 		double playerSpeed = 5*deltaTime.asSeconds();
 		// Change the camera position based on WASD. Or, I guess, just W in this case. 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-			playerX += std::cos(camAngle.asRadians())*playerSpeed;
-			playerY += std::sin(camAngle.asRadians())*playerSpeed;
+			playerPos.x += std::cos(camAngle.asRadians())*playerSpeed;
+			playerPos.y += std::sin(camAngle.asRadians())*playerSpeed;
 
-			std::cout << "X position is: " << playerX << "\n";
-			std::cout << "Y position is: " << playerY << "\n";
+			std::cout << "X position is: " << playerPos.x << "\n";
+			std::cout << "Y position is: " << playerPos.y << "\n";
 			
 		}
 
@@ -64,7 +64,7 @@ int main() {
 		window.clear(); // 1. Clear the framebuffer
 
 		// 2. Draw everything into the framebuffer that you must
-		window.draw(shape); 
+		// window.draw(shape); 
 		
 		window.display(); // 3. Draw the framebuffer
 
