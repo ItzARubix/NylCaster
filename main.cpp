@@ -19,13 +19,14 @@ int main() {
 	sf::Time deltaTime; // I must multiply everything by deltaTime. Otherwise, I am committing a crime
 
 	// Create the level layout
+	/*
 	int levelLayout[5][5] = {
 	{1, 1, 1, 1, 1},
 	{1, 0, 1, 0, 1},
 	{1, 0, 0, 0, 1},
 	{1, 0, 0, 0, 1},
 	{1, 1, 1, 1, 1}
-	};
+	};*/
 	// Create the window
 	sf::RenderWindow window(sf::VideoMode({640, 360}), "FeedTheBeast");
 
@@ -66,23 +67,29 @@ int main() {
 		// Step 1: Determine the displacement vectors between the player and the left/right edges of the quad.
 		sf::Vector2 displacementLeft = quadLeft-playerPos;
 		sf::Vector2 displacementRight = quadRight-playerPos;
-		// Step 2: Save the apparent height of each edge of the quad based on the displacement.
-		float apparentHeightLeft = 100/displacementLeft.length();
-		float apparentHeightRight = 100/displacementRight.length();
-		// Step 3: Determine the angles between the playerVision and each displacement.
+		// Step 2: Determine the angles between the playerVision and each displacement.
 		sf::Angle quadLeftAngle = playerVision.angleTo(displacementLeft);
 		sf::Angle quadRightAngle = playerVision.angleTo(displacementRight);
-		// (DEBUG): Print the quadLeftAngle and quadRightAngle
-		std::cout << "LAngle: " << quadLeftAngle.asDegrees() << "\n";
-		std::cout << "RAngle: " << quadRightAngle.asDegrees() << "\n";
+		// Step 3: Save the apparent height of each edge of the quad based on the displacement.
+		float apparentHeightLeft = 100/(abs(std::cos(quadLeftAngle.asRadians()))*displacementLeft.length());
+		float apparentHeightRight = 100/(abs(std::cos(quadRightAngle.asRadians()))*displacementRight.length());
 		// Step 4: Convert the view angle to a place on screen
+		sf::ConvexShape quadDrawn;
+		quadDrawn.setFillColor(sf::Color::Green);
+		quadDrawn.setPointCount(4);
+		quadDrawn.setFillColor(sf::Color::Green);
+		quadDrawn.setPoint(0, {8.0f*quadLeftAngle.asDegrees()+320, 180-0.5f*apparentHeightLeft});
+		quadDrawn.setPoint(1, {8.0f*quadLeftAngle.asDegrees()+320, 180+0.5f*apparentHeightLeft});
+		quadDrawn.setPoint(2, {8.0f*quadRightAngle.asDegrees()+320, 180+0.5f*apparentHeightRight});
+		quadDrawn.setPoint(3, {8.0f*quadRightAngle.asDegrees()+320, 180-0.5f*apparentHeightRight});
+		quadDrawn.setFillColor(sf::Color::Green);
 
 		// The last step in the loop is to actually draw everything to the screen. 
 		// Each frame, assuming the window wasn't closed, run these lines: 
 		window.clear(); // 1. Clear the framebuffer
 
 		// 2. Draw everything into the framebuffer that you must
-		// window.draw(shape); 
+		window.draw(quadDrawn); 
 		
 		window.display(); // 3. Draw the framebuffer
 
