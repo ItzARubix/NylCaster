@@ -6,7 +6,8 @@ int main() {
 
 	// Initialize player position and angle
 	sf::Vector2 playerPos(50.0f, 50.0f);
-	sf::Angle camAngle = sf::degrees(0); // Measured from typical x-axis, and clockwise (rather than typical CCW)
+	sf::Vector2 playerVision(1.0f, 0.0f);
+	// sf::Angle camAngle = sf::degrees(0); // Measured from typical x-axis, and clockwise (rather than typical CCW)
 
 	// Create a temporary quad. In particular, these are just two points, a left and right
 	sf::Vector2 quadLeft(100.0f, 40.0f);
@@ -40,20 +41,20 @@ int main() {
 		sf::Angle deltaCamAngle = sf::degrees(5*deltaTime.asSeconds());
 		// Change the camera orientation based on left/right input
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
-			camAngle-=deltaCamAngle;
-			std::cout << "Camr angle is: " << camAngle.asDegrees() << "\n";
+			playerVision = playerVision.rotatedBy(-1.0*deltaCamAngle);
+			std::cout << "Camr angle is: " << playerVision.angle().asDegrees() << "\n";
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
-			camAngle+=deltaCamAngle;
-			std::cout << "Camr angle is: " << camAngle.asDegrees() << "\n";
+			playerVision = playerVision.rotatedBy(deltaCamAngle);
+			std::cout << "Camr angle is: " << playerVision.angle().asDegrees() << "\n";
 		}
 
 		// Velocity magnitude
 		double playerSpeed = 5*deltaTime.asSeconds();
 		// Change the camera position based on WASD. Or, I guess, just W in this case. 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-			playerPos.x += std::cos(camAngle.asRadians())*playerSpeed;
-			playerPos.y += std::sin(camAngle.asRadians())*playerSpeed;
+			playerPos.x += std::cos(playerVision.angle().asRadians())*playerSpeed;
+			playerPos.y += std::sin(playerVision.angle().asRadians())*playerSpeed;
 
 			std::cout << "X position is: " << playerPos.x << "\n";
 			std::cout << "Y position is: " << playerPos.y << "\n";
