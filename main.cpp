@@ -1,17 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <math.h>
-
-double toRad(int degrees) {
-	return degrees * M_PI/180;
-}
+#include <cmath>
 
 int main() {
 
-	// Initialize camera position and angle
-	double camX = 50;
-	double camY = 50;
-	double camAngle = 0; // Measured from typical x-axis, and clockwise (rather than typical CCW)
+	// Initialize player position and angle
+	double playerX = 50;
+	double playerY = 50;
+	sf::Angle camAngle = sf::degrees(0); // Measured from typical x-axis, and clockwise (rather than typical CCW)
 
 	// Create the clock (this will be used for calculating deltaTime, which is the time between frames)
 	sf::Clock clock;
@@ -41,32 +37,26 @@ int main() {
 		// std::cout << "deltaTime is " << deltaTime.asSeconds() << "\n";
 
 		// Define deltaCamAngle, the amount that CamAngle should change each frame
-		double deltaCamAngle = 5*deltaTime.asSeconds();
+		sf::Angle deltaCamAngle = sf::degrees(5*deltaTime.asSeconds());
 		// Change the camera orientation based on left/right input
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
 			camAngle-=deltaCamAngle;
-			if(camAngle<0) {
-				camAngle+=360;
-			}
-			std::cout << "Camr angle is: " << camAngle << "\n";
+			std::cout << "Camr angle is: " << camAngle.asDegrees() << "\n";
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
 			camAngle+=deltaCamAngle;
-			if(camAngle>360) {
-				camAngle-=360;
-			}
-			std::cout << "Camr angle is: " << camAngle << "\n";
+			std::cout << "Camr angle is: " << camAngle.asDegrees() << "\n";
 		}
 
 		// Velocity magnitude
-		double camSpeed = 5*deltaTime.asSeconds();
+		double playerSpeed = 5*deltaTime.asSeconds();
 		// Change the camera position based on WASD. Or, I guess, just W in this case. 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-			camX += cos(toRad(camAngle))*camSpeed;
-			camY += sin(toRad(camAngle))*camSpeed;
+			playerX += std::cos(camAngle.asRadians())*playerSpeed;
+			playerY += std::sin(camAngle.asRadians())*playerSpeed;
 
-			std::cout << "X position is: " << camX << "\n";
-			std::cout << "Y position is: " << camY << "\n";
+			std::cout << "X position is: " << playerX << "\n";
+			std::cout << "Y position is: " << playerY << "\n";
 			
 		}
 
@@ -80,6 +70,6 @@ int main() {
 
 		deltaTime = clock.restart(); // 4. Save the deltaTime and restart the clock
 	}
-	return 0; // Return a normal exit code
+	return 0; // Return a normal exit code. Don't think this is necessary but it's ok.
 }
 
