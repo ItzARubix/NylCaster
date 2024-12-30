@@ -2,6 +2,9 @@
 #include <iostream>
 #include <cmath>
 
+float calculateScreenX(sf::Angle theta) {
+	return ((180.f*std::sin((9.f*theta.asRadians()))/(4.f))) + 180.f;
+}
 
 int main() {
 
@@ -73,17 +76,19 @@ int main() {
 		// Step 3: Save the apparent height of each edge of the quad based on the displacement.
 		// float apparentHeightLeft = 100/(abs(std::cos(quadLeftAngle.asRadians()))*displacementLeft.length());
 		// float apparentHeightRight = 100/(abs(std::cos(quadRightAngle.asRadians()))*displacementRight.length());
-		float apparentHeightLeft = 500/(displacementLeft.length());
-		float apparentHeightRight = 500/(displacementRight.length());
+		float apparentHeightLeft = 40/(displacementLeft.length());
+		float apparentHeightRight = 40/(displacementRight.length());
 	
 		// Step 4: Convert the view angle to a place on screen
 		sf::ConvexShape quadDrawn;
 		quadDrawn.setPointCount(4);
 		
-		quadDrawn.setPoint(0, {8.0f*quadLeftAngle.asDegrees()+320, 180-0.5f*apparentHeightLeft});
-		quadDrawn.setPoint(1, {8.0f*quadLeftAngle.asDegrees()+320, 180+0.5f*apparentHeightLeft});
-		quadDrawn.setPoint(2, {8.0f*quadRightAngle.asDegrees()+320, 180+0.5f*apparentHeightRight});
-		quadDrawn.setPoint(3, {8.0f*quadRightAngle.asDegrees()+320, 180-0.5f*apparentHeightRight});
+		float leftScreenX = calculateScreenX(quadLeftAngle);
+		float rightScreenX = calculateScreenX(quadRightAngle);
+		quadDrawn.setPoint(0, {leftScreenX, 180-0.5f*apparentHeightLeft});
+		quadDrawn.setPoint(1, {leftScreenX, 180+0.5f*apparentHeightLeft});
+		quadDrawn.setPoint(2, {rightScreenX, 180+0.5f*apparentHeightRight});
+		quadDrawn.setPoint(3, {rightScreenX, 180-0.5f*apparentHeightRight});
 		
 		/*
 		quadDrawn.setPoint(0, {20.f, 20.f});
@@ -108,10 +113,10 @@ int main() {
 			std::cout << "ApparHeightLeft:    " << apparentHeightLeft << "\n";
 			std::cout << "ApparHeightRight:   " << apparentHeightRight << "\n";
 			std::cout << "Quad corner screencoords:\n";
-			std::cout << "0. X: " << 8.0f*quadLeftAngle.asDegrees()+320 << " Y: " << 180-0.5f*apparentHeightLeft << "\n";
-			std::cout << "1. X: " << 8.0f*quadLeftAngle.asDegrees()+320 << " Y: " << 180+0.5f*apparentHeightLeft << "\n";
-			std::cout << "2. X: " << 8.0f*quadRightAngle.asDegrees()+320 << " Y: " << 180+0.5f*apparentHeightRight << "\n";
-			std::cout << "3. X: " << 8.0f*quadRightAngle.asDegrees()+320 << " Y: " << 180-0.5f*apparentHeightRight << "\n";
+			std::cout << "0. X: " << leftScreenX << " Y: " << 180-0.5f*apparentHeightLeft << "\n";
+			std::cout << "1. X: " << leftScreenX << " Y: " << 180+0.5f*apparentHeightLeft << "\n";
+			std::cout << "2. X: " << rightScreenX << " Y: " << 180+0.5f*apparentHeightRight << "\n";
+			std::cout << "3. X: " << rightScreenX << " Y: " << 180-0.5f*apparentHeightRight << "\n";
 
 		}
 
