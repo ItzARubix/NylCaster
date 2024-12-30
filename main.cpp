@@ -3,7 +3,8 @@
 #include <cmath>
 
 float calculateScreenX(sf::Angle theta) {
-	return ((180.f*std::sin((9.f*theta.asRadians()))/(4.f))) + 180.f;
+	return 180.f + 180.f*std::sin((9.f*theta.asRadians())/(4.f));
+	//return ((180.f*std::sin((9.f*theta.asRadians()))/(4.f))) + 180.f;
 }
 
 int main() {
@@ -117,7 +118,8 @@ int main() {
 			std::cout << "1. X: " << leftScreenX << " Y: " << 180+0.5f*apparentHeightLeft << "\n";
 			std::cout << "2. X: " << rightScreenX << " Y: " << 180+0.5f*apparentHeightRight << "\n";
 			std::cout << "3. X: " << rightScreenX << " Y: " << 180-0.5f*apparentHeightRight << "\n";
-
+			std::cout << calculateScreenX(sf::degrees(-40)) << "\n";
+			std::cout << calculateScreenX(sf::degrees(40)) << "\n";
 		}
 
 		// The last step in the loop is to actually draw everything to the screen. 
