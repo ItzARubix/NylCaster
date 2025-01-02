@@ -74,7 +74,18 @@ void rayCastingStep(sf::RenderWindow& window, Player player, std::vector<Wall> w
 		sf::VertexArray line(sf::PrimitiveType::Lines, 2);  
 		line[0] = sf::Vertex{sf::Vector2f(screenColumn, 180-(apparentHeight/2))};
 		line[1] = sf::Vertex{sf::Vector2f(screenColumn, 180+(apparentHeight/2))};
-		sf::Color lineColor(255/distance, 255/distance, 255/distance);
+		sf::Color lineColor;
+		if(distance<1) {
+			lineColor.r = 255;
+			lineColor.g = 255;
+			lineColor.b = 255;
+			// lineColor = (255,255,255);
+		} else {
+			// lineColor = (255/distance, 255/distance, 255/distance);
+			lineColor.r = 255/distance;
+			lineColor.g = 255/distance;
+			lineColor.b = 255/distance;
+		}
 		line[0].color = lineColor;
 		line[1].color = lineColor;
 		window.draw(line);
