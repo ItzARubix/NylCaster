@@ -33,7 +33,7 @@ class Wall {
 int main() {
 
 	// It is helpful to imagine the window as existing in worldspace. I precalculated this on paper, but this number is dependent on the FOV, so I might have to change it later.
-	constexpr float camToScreenDistance = 180/std::tan(2*M_PI/9);
+	constexpr float camToScreenDistance = 320/std::tan(2*M_PI/9);
 	
 	// Create a player.
 	Player player;
@@ -72,7 +72,7 @@ int main() {
 
 		// VELOCITY LOGIC.
 		// 1. Define playerSpeed, a scalar that we'll use to ensure the magnitude of the player velocity remains consistent.
-		float playerSpeed = 12.f;
+		float playerSpeed = 2.f;
 		// 2. Create a temporary vector that encodes all the directional information about the player movement.
 		sf::Vector2 velocityDirection(0.f, 0.f);
 		// 3. Forward/backward direction is governed by player.vision.
@@ -128,7 +128,7 @@ int main() {
 		// This takes place in a for-loop, where each iteration represents one column of pixels on the window. 
 		// In particular, as you shall see, the for-loop iterates from i=-180 to i=180, and the actual column being drawn to is i+180 (because the range of columns on screen is 0 to 360).
 		// We also have to calculate, based on the current iteration, what the angle that the ray should be cast at. Note that this is NOT a linear scale, and involves a teeny bit of trig.
-		for(int i=-180; i<=180; i++) {
+		for(int i=-320; i<=320; i++) {
 			sf::Angle rayDirectionAngle = sf::radians(std::atan(i/camToScreenDistance));
 			sf::Vector2 ray = 100.f*player.vision.rotatedBy(rayDirectionAngle);
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X)) {
@@ -148,14 +148,22 @@ int main() {
 			float y_4 = wall.right.y;
 			float t_numerator = ((x_1-x_3)*(y_3-y_4)) - ((y_1-y_3)*(x_3-x_4));
 			float t_denominator = ((x_1-x_2)*(y_3-y_4)) - ((y_1-y_2)*(x_3-x_4));
-			float s_numerator = ((x_1-x_2)*(y_1-y_3)) - ((y_1-y_2)*(x_1-x_3));
+			float s_numerator = -1*(((x_1-x_2)*(y_1-y_3)) - ((y_1-y_2)*(x_1-x_3)));
 			float s_denominator = ((x_1-x_2)*(y_3-y_4)) - ((y_1-y_2)*(x_3-x_4));
-			// The names are only slightly misleading:
-			// t is equal to t_numerator/t_denominator,
-			// but s is equal to the negative of s_numerator/s_denominator.
-			// There's no good reason to include the negative sign in the numerator over the denominator or vice versa,
-			// so I didn't bother. When I define s I'll just include the negative sign there.
-			if()
+			// As you might imagine, it's arbitrary whether we put the negative sign in the numerator or the denominator for s. It'll give us the same answer for our purposes.
+			if( (std::abs(t_numerator) < std::abs(t_denominator)) && (t_numerator*t_denominator > 0) && (std::abs(s_numerator) < std::abs(s_denominator)) && (s_numerator*s_denominator > 0) ) {
+				float t = t_numerator/t_denominator;
+				sf::Vector2 intersectionPoint(x_1 + t*(x_2-x_1), y_1 + t*(y_2-y_1));
+				sf::Vector2 displacementVector = intersectionPoint-player.position;
+				float apparentHeight = 100/(std::abs(std::cos(rayDirectionAngle.asRadians()))*displacementVector.length());
+				float screenColumn = i+320.f;
+				std::array line = 
+				{
+					sf::Vertex{sf::Vector2f(screenColumn, 180-(apparentHeight/2))},
+					sf::Vertex{sf::Vector2f(screenColumn, 180+(apparentHeight/2))}
+				};
+				window.draw(line.data(), line.size(), sf::PrimitiveType::Lines);
+			}
 		}
 
 		// 3. Draw the framebuffer.
