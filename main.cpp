@@ -68,14 +68,16 @@ void rayCastingStep(sf::RenderWindow& window, Player player, std::vector<Wall> w
 				}
 			}
 		}
-		float apparentHeight = 360/(std::abs(std::cos(rayDirectionAngle.asRadians()))*currentShortestDisplacement.length());
+		float distance = currentShortestDisplacement.length();
+		float apparentHeight = 360/(std::abs(std::cos(rayDirectionAngle.asRadians()))*distance);
 		float screenColumn = i+320.f;
-		std::array line = 
-		{
-			sf::Vertex{sf::Vector2f(screenColumn, 180-(apparentHeight/2))},
-			sf::Vertex{sf::Vector2f(screenColumn, 180+(apparentHeight/2))}
-		};
-		window.draw(line.data(), line.size(), sf::PrimitiveType::Lines);
+		sf::VertexArray line(sf::PrimitiveType::Lines, 2);  
+		line[0] = sf::Vertex{sf::Vector2f(screenColumn, 180-(apparentHeight/2))};
+		line[1] = sf::Vertex{sf::Vector2f(screenColumn, 180+(apparentHeight/2))};
+		sf::Color lineColor(255/distance, 255/distance, 255/distance);
+		line[0].color = lineColor;
+		line[1].color = lineColor;
+		window.draw(line);
 	}
 }
 
@@ -88,7 +90,7 @@ int main() {
 	// Create a player.
 	Player player;
 
-	// (TEMP) Create a wall. 
+	// Create the level. You can edit this if you want to create a different layout of walls. 
 	Wall wallClose(10.f, -5.f, 10.f, 5.f);
 	Wall wallFar(20.f, -10.f, 20.f, 10.f);
 	std::vector<Wall> level;
@@ -180,49 +182,6 @@ int main() {
 		// 2. Draw everything to the framebuffer that you must.
 		// RAYCASTING LOGIC.
 		rayCastingStep(window, player, level);
-
-		/*
-		// This takes place in a for-loop, where each iteration represents one column of pixels on the window. 
-		// In particular, as you shall see, the for-loop iterates from i=-180 to i=180, and the actual column being drawn to is i+180 (because the range of columns on screen is 0 to 360).
-		// We also have to calculate, based on the current iteration, what the angle that the ray should be cast at. Note that this is NOT a linear scale, and involves a teeny bit of trig.
-		for(int i=-320; i<=320; i++) {
-			sf::Angle rayDirectionAngle = sf::radians(std::atan(i/camToScreenDistance));
-			sf::Vector2 ray = 100.f*player.vision.rotatedBy(rayDirectionAngle);
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X)) {
-				std::cout << "For iteration " << i << " the rayDirectionAngle is " << rayDirectionAngle.asDegrees() << "\n";
-			}
-			
-			// IT'S TIME FOR THE WORST VARIABLE NAMES KNOWN TO MANKIND YAYYYY
-			// For the sake of not obfuscating what I'm doing here, https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Given_two_points_on_each_line_segment
-			// Godspeed
-			float x_1 = player.position.x;
-			float y_1 = player.position.y;
-			float x_2 = x_1 + ray.x;
-			float y_2 = y_1 + ray.y;
-			float x_3 = wall.left.x;
-			float y_3 = wall.left.y;
-			float x_4 = wall.right.x;
-			float y_4 = wall.right.y;
-			float t_numerator = ((x_1-x_3)*(y_3-y_4)) - ((y_1-y_3)*(x_3-x_4));
-			float t_denominator = ((x_1-x_2)*(y_3-y_4)) - ((y_1-y_2)*(x_3-x_4));
-			float s_numerator = -1*(((x_1-x_2)*(y_1-y_3)) - ((y_1-y_2)*(x_1-x_3)));
-			float s_denominator = ((x_1-x_2)*(y_3-y_4)) - ((y_1-y_2)*(x_3-x_4));
-			// As you might imagine, it's arbitrary whether we put the negative sign in the numerator or the denominator for s. It'll give us the same answer for our purposes.
-			if( (std::abs(t_numerator) < std::abs(t_denominator)) && (t_numerator*t_denominator > 0) && (std::abs(s_numerator) < std::abs(s_denominator)) && (s_numerator*s_denominator > 0) ) {
-				float t = t_numerator/t_denominator;
-				sf::Vector2 intersectionPoint(x_1 + t*(x_2-x_1), y_1 + t*(y_2-y_1));
-				sf::Vector2 displacementVector = intersectionPoint-player.position;
-				float apparentHeight = 360/(std::abs(std::cos(rayDirectionAngle.asRadians()))*displacementVector.length());
-				float screenColumn = i+320.f;
-				std::array line = 
-				{
-					sf::Vertex{sf::Vector2f(screenColumn, 180-(apparentHeight/2))},
-					sf::Vertex{sf::Vector2f(screenColumn, 180+(apparentHeight/2))}
-				};
-				window.draw(line.data(), line.size(), sf::PrimitiveType::Lines);
-			}
-		}
-		*/
 
 		// 3. Draw the framebuffer.
 		window.display();
