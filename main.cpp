@@ -21,7 +21,7 @@ class Wall {
 	public:
 		sf::Vector2<float> left;
 		sf::Vector2<float> right;
-		Wall() : left(10.f, -5.f), right(10.f, 5.f) {
+		Wall() : left(10.f, -0.5f), right(10.f, 0.5f) {
 			// This is temporary. Will edit this to give real coords to the wall later.
 		}
 		~Wall() {
@@ -155,7 +155,7 @@ int main() {
 				float t = t_numerator/t_denominator;
 				sf::Vector2 intersectionPoint(x_1 + t*(x_2-x_1), y_1 + t*(y_2-y_1));
 				sf::Vector2 displacementVector = intersectionPoint-player.position;
-				float apparentHeight = 100/(std::abs(std::cos(rayDirectionAngle.asRadians()))*displacementVector.length());
+				float apparentHeight = 360/(std::abs(std::cos(rayDirectionAngle.asRadians()))*displacementVector.length());
 				float screenColumn = i+320.f;
 				std::array line = 
 				{
