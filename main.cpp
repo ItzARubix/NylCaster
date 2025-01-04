@@ -1,6 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
+#include <fstream>
+#include <string>
+#include <sstream>
 
 // Let it be known that I thusly have no idea how classes work in C++ lol. 
 
@@ -101,12 +104,24 @@ int main() {
 	// Create a player.
 	Player player;
 
-	// Create the level. You can edit this if you want to create a different layout of walls. 
-	Wall wallClose(10.f, -5.f, 10.f, 5.f);
-	Wall wallFar(20.f, -10.f, 20.f, 10.f);
+	// Create the level. You can edit this if you want to create a different layout of walls.
+	std::ifstream levelFile("level.txt");
+	if(!levelFile) {
+		std::cerr << "Failed to open level file. Make sure that you have a file named \"level.txt\" in the directory that the binary is stored, that includes the coordinates of a wall on each line (each line should have four numbers, two floats that represent the left edge of the wall in worldspace, and two floats that represent the right edge).\n";
+		return 1;
+	}
+	std::cout << "Make sure your level file has no commas or anything other than floats. One line might look like\n10.0 -5.0 10.0 5.0\nIf your level file has unexpected characters this could lead to unexpected behavior which I can't be bothered to check for.\n";
+	std::string line;
 	std::vector<Wall> level;
-	level.push_back(wallClose);
-	level.push_back(wallFar);
+	float leftEdgeX, leftEdgeY, rightEdgeX, rightEdgeY;
+	while (std::getline(levelFile, line)) {
+		std::istringstream lineStream(line);
+
+		lineStream >> leftEdgeX >> leftEdgeY >> rightEdgeX >> rightEdgeY;
+		level.emplace_back(leftEdgeX, leftEdgeY, rightEdgeX, rightEdgeY);
+		
+	}
+	
 
 	// Create the clock and a time variable to store deltaTime.
 	sf::Clock clock;
