@@ -25,7 +25,7 @@ This project uses `meson`, a build tool that automatically handles compilation a
 In order to build FeedTheBeast and run it, you must ensure that you have `meson` (and all its dependencies, notably `ninja`) on your system. It is recommended that you do this through your distro's package manager, but it can also be done through `pip`. See [Meson's installation page](https://mesonbuild.com/Getting-meson.html) for more information.
 
 ## If you have a systemwide SFML install
-- Make sure Meson, CMake, and SFML are all installed
+- Make sure Meson and SFML are both installed
 - Clone and `cd` into this repository
 - Run `meson setup builddir -DuseSystemSFML=true`
 - Run `cd builddir`
