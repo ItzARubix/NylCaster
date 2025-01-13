@@ -14,6 +14,7 @@ FeedTheBeast relies on [Simple and Fast Multimedia Library](https://www.sfml-dev
 - `libegl1-mesa-dev`
 - `libdrm-dev`
 - `libgbm-dev`
+
 (I imagine that the non-dev versions of all of these packages work as well). Use your distro's package manager to install all of these. (On Windows, I'm pretty sure SFML uses packages that are shipped with the OS, so you don't need to install anything additional).
 
 Finally, make sure you have both Meson and CMake installed and available in your PATH. 
