@@ -33,7 +33,7 @@ In order to build FeedTheBeast and run it, you must ensure that you have `meson`
 - The executable should now be in the build directory. To run it, run `./FeedTheBeast`
 
 ## If you want to use the SFML submodule
-- Make sure Meson, CMake, and SFML are all installed
+- Make sure Meson and CMake are both installed
 - Clone and `cd` into this repository
 - Run `meson setup builddir`
 - Run `cd builddir`
