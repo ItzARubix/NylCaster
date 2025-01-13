@@ -6,7 +6,7 @@ if useSystemSFML
   executable('FeedTheBeast', 'main.cpp', dependencies : sfmldep)
 else
   cmake = import('cmake')
-  sfml_proj = cmake.subproject('sfml')
+  sfml_proj = cmake.subproject('SFML')
   sfml_graphics = sfml_proj.dependency('sfml-graphics')
   sfml_window = sfml_proj.dependency('sfml-window')
   sfml_system = sfml_proj.dependency('sfml-system')
