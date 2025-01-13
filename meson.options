@@ -1,0 +1,1 @@
+option('useSystemSFML', type : 'boolean', value : false)
