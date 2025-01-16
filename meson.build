@@ -1,9 +1,9 @@
-project('FeedTheBeast', 'cpp')
+project('NylCaster', 'cpp')
 useSystemSFML = get_option('useSystemSFML')
 
 if useSystemSFML
   sfmldep = dependency('sfml-all')
-  executable('FeedTheBeast', 'main.cpp', dependencies : sfmldep)
+  executable('NylCaster', 'main.cpp', dependencies : sfmldep)
 else
   cmake = import('cmake')
   sfml_proj = cmake.subproject('SFML')
@@ -16,8 +16,8 @@ else
     winmm = compiler.find_library('winmm', required: true)
     ogl = compiler.find_library('opengl32', required: true)
     sfml_main = sfml_proj.dependency('sfml-main')
-    executable('FeedTheBeast', 'main.cpp', dependencies : [sfml_graphics, sfml_window, sfml_system, sfml_main, winmm, ogl], win_subsystem: 'console')
+    executable('NylCaster', 'main.cpp', dependencies : [sfml_graphics, sfml_window, sfml_system, sfml_main, winmm, ogl], win_subsystem: 'console')
   else
-    executable('FeedTheBeast', 'main.cpp', dependencies : [sfml_graphics, sfml_window, sfml_system])
+    executable('NylCaster', 'main.cpp', dependencies : [sfml_graphics, sfml_window, sfml_system])
   endif
 endif
