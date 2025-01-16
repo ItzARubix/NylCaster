@@ -128,7 +128,7 @@ int main() {
 	sf::Time deltaTime;
 
 	// Create the window.
-	sf::RenderWindow window(sf::VideoMode({640,360}), "FeedTheBeast");
+	sf::RenderWindow window(sf::VideoMode({640,360}), "NylCaster");
 
 	while (window.isOpen()) { // Primary execution loop. This will run for as long as the window is open. 
 
