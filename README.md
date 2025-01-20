@@ -1,5 +1,5 @@
 # NylCaster
-An SFML demonstration utilizing the Meson SFML template
+An SFML demonstration utilizing the [Meson SFML template](https://github.com/ItzARubix/Meson-SFML-Template/tree/main)
 
 # Dependencies
 NylCaster relies on [Simple and Fast Multimedia Library](https://www.sfml-dev.org/). You may use a systemwide installation of SFML, but this project also provides SFML as a Git submodule in case you are unable (or do not want to) install SFML systemwide. Instructions on how to use a systemwide SFML install and how to use the Git subproject are provided below (using a systemwide SFML install will make the compile time of this project much faster).
